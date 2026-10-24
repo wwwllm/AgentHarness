@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# 环境与密钥
+.env
+.env.*
+!.env.example
+
+# 轨迹与评测输出（体积大，不入库）
+traces/*.jsonl
+eval/reports/
+
+# Go
+gateway/bin/
+gateway/*.test
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
