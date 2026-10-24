@@ -6,6 +6,31 @@
 
 ---
 
+## 明日（10/25 周日）读什么 —— 只读三样，共约 2.5 小时
+
+| 顺序 | 读什么 | 读哪部分 | 时长 | 产出（必须落在 `notes/w1-reading.md`） |
+|---|---|---|---|---|
+| 1 | **[A4 Harness Engineering](https://arxiv.org/abs/2609.00006)** | §定义 + **七个子系统（每个的最小实现/最大实现）** + 结论与 13 条观察。**跳过 11 个系统的逐个剖析** | 60 min | 七个子系统清单，每个标注「我的作品里对应哪个文件」 |
+| 2 | **你手上模型厂商的 Tool Use 文档**（一手，不是博客）。参考写法：[Anthropic Tool use](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview) | 完整的一次往返：请求里 tools 怎么定义 → 响应里 tool_calls 长什么样 → 结果怎么回灌 → 多轮怎么串 | 60 min | 手抄一份真实的 request / response 报文样例（脱敏） |
+| 3 | **[B2 Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents)** —— 只读两节 | 「What is a tool」+「Prompt-engineering your tool descriptions」 | 30 min | 5 条工具描述的自查项（写成能打勾的句子） |
+
+**明天不读**：ReAct 全文、MemGPT、Voyager、任何源码、任何 C 类材料（计价/模型对比/面经）。理由见 `00_资料清单与学习法.md` 一·B 节。
+
+### 常用链接速查（这几个会反复点）
+
+| 用途 | 链接 |
+|---|---|
+| 全部资料清单（41 条链接） | [00_资料清单与学习法.md](00_资料清单与学习法.md) |
+| 坐标系（七个子系统） | [arXiv:2609.00006](https://arxiv.org/abs/2609.00006) |
+| 工具设计（写工具前必读） | [Writing tools for agents](https://www.anthropic.com/engineering/writing-tools-for-agents) |
+| 上下文工程 | [Effective context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) |
+| 失败分类学（踩坑时查） | [Pitfalls](https://ai.zenoagi.com/harness/practice/pitfalls) |
+| 中文打底 + 八股 | [hello-agents](https://github.com/datawhalechina/hello-agents) |
+| 参考实现（最小 harness） | [pi-mono](https://github.com/earendil-works/pi) |
+| 研究进展（每周扫标题） | [arXiv cs.CL](https://arxiv.org/list/cs.CL/recent) · [simonwillison.net](https://simonwillison.net/) |
+
+---
+
 ## 当前状态
 
 | 项 | 值 |
