@@ -53,6 +53,8 @@
 | LLM 统一封装 | `src/llm/client.py` | 未开始 | 要支持换模型 + 记账 + 重试 |
 | Agent Loop | `src/agent/loop.py` | 未开始 | W1 的唯一目标 |
 | 工具定义与注册 | `src/tools/` | 未开始 | W2–W3，20 个工具 |
+| **C++ 车况模拟器** | `sim/vehicle_sim.cpp` | 未开始 | W5，工具的真对象，JSONL 状态流 |
+| Python ↔ 模拟器通信 | `src/sim_bridge.py` | 未开始 | W5，stdin/stdout 行协议 |
 | 上下文管理 | `src/context/` | 未开始 | W4–W5，预算 / 截断 / 摘要 |
 | 记忆（FTS5） | `src/memory/` | 未开始 | W5，工作区 / 召回 / 归档 |
 | 安全与权限 | `src/safety/` | 未开始 | W6，L0–L3 分级 |
