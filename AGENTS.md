@@ -22,6 +22,7 @@
 |---|---|---|
 | Python | **基础语法**：变量、循环、函数、字典、列表、if/else | asyncio、pydantic、pytest、装饰器、生成器、typing 高级用法、包结构组织、日志 |
 | Agent | 学过**一部分** LangChain，会调 API | 手写 loop、工具层设计、上下文管理、记忆、评测、trace、任何 harness 实践 |
+| **C++** | **我目前最强的语言**：STL 熟练、了解部分 C++23 特性、竞赛级强度 | **裸指针 / 所有权语义**、**异常与异常安全**、构建系统（CMake）、并发、工程化调试 |
 | Go | 语法级，没学框架 | goroutine 并发模式、context、标准库工程实践 |
 
 **因此：**
@@ -132,11 +133,27 @@
 | 宏定义函数、`#define rep(i,a,b)` | 普通函数 / range-for |
 | 手写快速读入 `getchar()` 循环 | `std::getline` + `std::stringstream`（这个场景不需要极致 IO） |
 | `new` / `delete` 手工管理 | 智能指针、栈对象、RAII |
-| 不用异常，`return -1` 表示失败 | `std::optional` 或抛异常，调用方必须处理 |
+| 不用异常，`return -1` 表示失败 | `std::optional` / `std::expected`（C++23）或显式错误码枚举，调用方**必须**处理 |
 | 单文件 `main.cpp` 写完 | 拆成头文件 + 源文件 + `CMakeLists.txt` |
 | 不编译警告开关 | 必须 `-Wall -Wextra -O2 -std=c++17` 零警告 |
 
 **新增 C++ 代码必须附带**：`CMakeLists.txt`、一条能复现的编译命令、一个 `make sim` 或 `cmake --build` 的说明。
+
+### 5.2 本项目的 C++ 两条硬决策（不要替我改）
+
+**决策一：全项目 no-exception，用 `std::optional` / `std::expected` + 错误码。**
+
+- 不是因为我不会异常，而是**车规的惯例**：AUTOSAR C++14 / MISRA C++ 都限制甚至禁用异常，很多车端代码库直接 `-fno-exceptions` 编译。
+- 所以我按这个约束写，是「符合领域规范」，不是「回避难点」。
+- 例外：`std` 容器仍可能抛 `bad_alloc`，所以 RAII 必须正确——这条认知要有，但不需要会写复杂异常安全代码。
+
+**决策二：编译标准用 C++17，而不是 C++23。**
+
+- 车端工具链普遍落后（GCC 9–11 常见），只支持到 C++17。
+- 但我知道 C++23 的写法。所以：**代码按 C++17 写，README 里写清「我知道 `std::expected` / `<ranges>` 能用，但为兼容车端工具链选了 C++17 + optional + 错误码枚举」**。
+- 这个取舍本身就是智驾面试的加分项——它证明我理解工程约束，而不只是会新特性。
+
+**两条都不需要你提醒我，只需要你在我违反时指出来。**
 
 ---
 

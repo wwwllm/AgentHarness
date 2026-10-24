@@ -36,7 +36,7 @@
 
 | 项 | 值 |
 |---|---|
-| 当前周次 | **W1-A（10/26–10/28）Python 补齐 → W1-B（10/29–11/04）最小 loop** |
+| 当前周次 | **W1-A（10/26–10/28）补 Python ＋ 同步开写 C++ 模拟器 → W1-B（10/29–11/04）最小 loop** |
 | 本周主题 | 先能写，再写 agent。**第一版 loop 用同步 + 字典 + 不用 pydantic/pytest** |
 | 我的基线 | Python 基础语法；agent 只学过 LangChain + 调 API；async / pydantic / pytest 未掌握 |
 | 项目阶段 | 冷启动，代码零行 |
@@ -53,7 +53,7 @@
 | LLM 统一封装 | `src/llm/client.py` | 未开始 | 要支持换模型 + 记账 + 重试 |
 | Agent Loop | `src/agent/loop.py` | 未开始 | W1 的唯一目标 |
 | 工具定义与注册 | `src/tools/` | 未开始 | W2–W3，20 个工具 |
-| **C++ 车况模拟器** | `sim/vehicle_sim.cpp` | 未开始 | W5，工具的真对象，JSONL 状态流 |
+| **C++ 车况模拟器** | `sim/vehicle_sim.cpp` | 未开始 | **W1-A 就开工**（我的最强语言，不依赖 Python），工具的真对象 |
 | Python ↔ 模拟器通信 | `src/sim_bridge.py` | 未开始 | W5，stdin/stdout 行协议 |
 | 上下文管理 | `src/context/` | 未开始 | W4–W5，预算 / 截断 / 摘要 |
 | 记忆（FTS5） | `src/memory/` | 未开始 | W5，工作区 / 召回 / 归档 |
