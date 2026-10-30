@@ -65,7 +65,7 @@
 | trace 落盘 | `src/trace.py` | 未开始 | 参考实现在 `notes/d02-reference/trace.py` |
 | 评测集 | `eval/tasks.jsonl` | 未开始 | W8，目标 50 条 |
 | 评测脚本 | `eval/run.py` | 未开始 | 终态断言 + 五指标 |
-| README | `README.md` | 占位 | 结论由我自己写 |
+| README | `README.md` | 进行中 | 开源门面结构/架构图/设计取舍/评测指标已完善；后续随实测数据持续微调 |
 
 ---
 
@@ -114,6 +114,7 @@
 | 2026-10-30 | notes/d02-reference | 完整参考实现（5 文件 / 481 行 / 全部 ≤150 行）落在**笔记目录**，**不进 `src/`**——`src/` 归用户自己写。已验证真跑：3 步 done、成本 0.00524 元 |
 | 2026-10-30 | notes/*.ipynb | 笔记全部改为 Jupyter notebook；已在**真 kernel** 里逐 cell 跑通（d01 的 V2 报 TypeError 属预期）；本机装了 ipykernel 并注册 kernelspec `python3` |
 | 2026-10-30 | src/agent/loop.py | 按用户要求回退到 18 行草稿版，未动 |
+| 2026-10-30 | README.md | 重构对外开源门面：补齐架构图、L0-L3权限矩阵、工程取舍对比表、五维评测基准与快速开始 |
 
 ---
 
