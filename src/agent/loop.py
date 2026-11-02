@@ -1,7 +1,13 @@
 import re
 import json
+import os
+from openai import OpenAI
 
-AC_STATUS={"temp":27};
+AC_STATUS={"temp":27}
+client=OpenAI(
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
+    base_url=os.getenv("DEEPSEEK_API_URL")
+)
 def get_weather(argvs:dict)->dict:
     city=argvs.get("city")
     if not city:
