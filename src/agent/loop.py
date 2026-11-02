@@ -1,31 +1,35 @@
 import re
 import json
 
-status =27
-def get_weather(argvs:dict):
+AC_STATUS={"temp":27};
+def get_weather(argvs:dict)->dict:
     city=argvs.get("city")
     if not city:
         return {"ok":False,"error":"city参数缺失"}
     return {"ok":True,"data":{"city":city,"weather":"晴天"}}
 
 
-def control_ac(argvs:dict):
+def control_ac(argvs:dict)->dict:
     temp=argvs.get("temp")
     if temp is None:
         return {"ok":False,"error":"temp参数缺失"}
-    if not isinstance(temp,(int,float)):
-        return {"ok":False,"error":"temp参数必须是数字"}
+    if isinstance(temp, bool) or not isinstance(temp, (int, float)):
+        return {"ok":False,"error":"temp 必须是数字"}
     if temp>30 or temp < 16:
         return {"ok":False,"error":"temp参数必须在16-30之间"}
-    status=temp
+    AC_STATUS["temp"]=temp
     return {"ok":True,"data":{"temp":temp,"status":"空调已设置"}}
 
 TOOL_REGISTRY={"get_weather":get_weather,"control_ac":control_ac}
-def invoke(messages:list):
+def invoke(messages:list)->dict:
     if any(m["role"]=="tool" for  m in messages):
         temp = re.search(r"-?\d+", messages[0]["content"])
         return {"content":f"已经将空调温度设置为{temp.group()}度"}
     temp = re.search(r"-?\d+", messages[0]["content"])
+    if temp is None:                      
+        return {"content": "我没听出你要设置的温度，请说一个 16~30 的数字。"}
+    if int(temp.group())>30 or int(temp.group()) < 16:
+            return {"ok":False,"error":"temp参数必须在16-30之间"}
     argvs ={"temperature":int(temp.group())} if temp else {}
     return {"tool_calls":[{"id":"call_1","function":{"name":"control_ac","arguments":json.dumps(argvs)}} ]}
     
@@ -58,6 +62,7 @@ def run(command:str ,max_steps:int=3)->None:
     return "对话轮数超过最大限制，终止对话。"
 
 if __name__ == '__main__':
-    run("今天吃什么？")
-    run("把空调温度调到-273度。")
-    run("把空调温度调到16度。")
+    for ins in ["把空调调到 24 度", "把空调调到 -16 度", "把空调调到 99 度"]:
+            print("指令:", ins)
+            print("  模型说:", run(ins))
+            print("  真实状态:", AC_STATUS)  
