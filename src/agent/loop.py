@@ -1,13 +1,8 @@
-import re
 import json
 import os
 from openai import OpenAI
 
 AC_STATUS={"temp":27}
-client=OpenAI(
-    api_key=os.getenv("DEEPSEEK_API_KEY"),
-    base_url=os.getenv("DEEPSEEK_API_URL")
-)
 def get_weather(city:str)->dict:
     if not city:
         return {"ok":False,"error":"city参数缺失"}
@@ -63,8 +58,44 @@ TOOL_MAP = {
     "get_weather": get_weather,
     "control_ac": control_ac
 }
+TOOL_LOG=[]
+def invoke_tool(tool_call)->dict:
+    name=tool_call.function.name
+    raw_args=tool_call.function.arguments
+    fun=TOOL_MAP.get(name)
+    if fun is None:
+        err=f"工具 {name} 不存在，可用工具：{', '.join(TOOL_MAP)}"
+        TOOL_LOG.append({"tool":name,"args":raw_args,"res":{"ok":False,"error":err}})
+        return {"ok":False,"error":err}
+    try:
+        args=json.loads(raw_args)
+    except json.JSONDecodeError as e:
+        err=f"参数不是合法 JSON: {e}"
+        TOOL_LOG.append({"tool":name,"args":raw_args,"res":{"ok":False,"error":err}})
+        return {"ok":False,"error":err}
 
-def run(command: str,max_steps:int=3)->str:
+    if not isinstance(args, dict):
+        err=f"参数必须是 JSON 对象，收到 {type(args).__name__}"
+        TOOL_LOG.append({"tool":name,"args":raw_args,"res":{"ok":False,"error":err}})
+        return {"ok":False,"error":err}
+
+    try:
+        res=fun(**args)
+        TOOL_LOG.append({"tool":name,"args":raw_args,"res":res})
+        return res
+    except TypeError as e:
+        err=f"工具 {name} 的参数不匹配: {e}"
+        TOOL_LOG.append({"tool":name,"args":raw_args,"res":{"ok":False,"error":err}})
+        return {"ok":False,"error":err}
+
+
+def run(command: str,max_steps:int=3,client=None)->str:
+    if client is None:
+        client=OpenAI(
+            api_key=os.getenv("DEEPSEEK_API_KEY"),
+            base_url=  os.getenv("DEEPSEEK_API_URL")
+        )
+    
     messages=[{"role":"user","content":command}]
     sub_turn=1
     while True:
@@ -81,13 +112,12 @@ def run(command: str,max_steps:int=3)->str:
         if response.choices[0].message.tool_calls is None:
             break
         for tool in response.choices[0].message.tool_calls:
-            tool_fun=TOOL_MAP[tool.function.name]
-            tool_res=tool_fun(**json.loads(tool.function.arguments))
+            tool_res=invoke_tool(tool)
             messages.append({
                 "role":"tool",
                 "name":tool.function.name,
                 "tool_call_id":tool.id,
-                "content":json.dumps(tool_res)
+                "content":json.dumps(tool_res,ensure_ascii=False)
             })
         sub_turn+=1
         if sub_turn>max_steps:
@@ -95,8 +125,13 @@ def run(command: str,max_steps:int=3)->str:
     return messages[-1].content
 
 
-if __name__ == '__main__':
-    for ins in ["把空调调到 24 度", "把空调调到 -16 度", "把空调调到 99 度"]:
-            print("指令:", ins)
-            print("  模型说:", run(ins))
-            print("  真实状态:", AC_STATUS)  
+if __name__ == "__main__":
+    for cmd in ["把空调调到 24 度","把空调调到 99 度","把车窗打开 30%"]:
+        AC_STATUS["temp"] = 27          
+        TOOL_LOG.clear()
+        print(f"\n======================")
+        print("指令     :", cmd)
+        print("模型说   :", run(cmd))
+        for item in TOOL_LOG:
+            print("工具执行 :", item["tool"], item["args"], "→", item["res"])
+        print("真实状态 :", AC_STATUS)
