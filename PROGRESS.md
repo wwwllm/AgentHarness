@@ -125,6 +125,7 @@
 | 2026-10-30 | README.md | 重构对外开源门面：补齐架构图、L0-L3权限矩阵、工程取舍对比表、五维评测基准与快速开始 |
 | 2026-11-06 | src/agent/loop.py + notes/d03 | 工具兜底（未知工具 / 坏 JSON / 非对象参数 / 多余参数）+ `TOOL_LOG` 挪到统一出口（成功也记）+ 错误文案按错因分开（日志与回灌共用 `err`，不再分叉）；`arguments="null"` 的 UnboundLocalError 已修；FakeClient 剧本注入（返回 SimpleNamespace，`run()` 未改） |
 | 2026-11-06 | src/agent/loop.py → tests/ | `FakeClient` + `CASES` 拆到 `tests/loop_test.py`，`loop.py` 173 → 136 行（回到 150 行以内）；四条假路径回归通过；真 API 复核通过 |
+| 2026-11-06 | AGENTS.md + PROGRESS.md | 学习计划改**阶段制**（P1–P7 阶段表 + 外部时间约束单列）；AGENTS.md §4/§10 改为任务推送制；模块进度加阶段列并清掉 `d02-reference` 旧引用；关键数字只记 `src/` 实测；d01 段标存档 |
 
 ---
 
